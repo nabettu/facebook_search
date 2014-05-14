@@ -1,79 +1,137 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Facebook search : " />
+<title>Who's who</title>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta name="robots" content="INDEX,FOLLOW" />
+<meta name="viewport" content="width=device-width ">
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+</head>
 
-    <title>Facebook search</title>
-  </head>
+<body>
+<div id="fb-root"></div>
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="main.js"></script>
+<div id="header"><h1>Who's who<span id="header_copy">powered by <a id="kumonos_link" href="http://kumonos.jp" target="_blank">Kumonos</a></span></h1></div>
+<div id="wrapper">
+<div id="description">
+	<h2>これは何？</h2>
+	<p>facebookを使っていて、こんなときありませんか？</p>
+	<ul id="description_ul">
+		<li>・会社名思い出せるけど、名前が出てこない</li>
+		<li>・卒業大学思い出せるけど、名前が出てこない</li>
+		<li>・独身女子に「合コンして」と頼まれて、独身の男子の友達をfacebookで検索するのにとても時間かかる</li>
+		<li>・あー、今日ヒマだなー。俺の友達で渋谷近辺で25歳以下ぐらいで独身で手頃に誘える女子いなかったけー</li>
+	</ul>
+	<p>そんなあなたに超便利ツール！！その名も「☆who’s who?（フーズフー）」</p>
 
-  <body>
+	<button id="add_bookmark">お気に入りに登録</button>
+	<div id="social_buttons" class="clearfix">
+		<div class="fb-like" data-send="false" data-width="920" data-show-faces="true"></div>
+		<div><a href="https://twitter.com/share" class="twitter-share-button" data-text="facebook友達検索" data-lang="ja">ツイート</a></div>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+	</div>
+</div>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/tatsuakiw/facebook_search">View on GitHub</a>
+<div id="howto">
+	<h2>使い方</h2>
+	<p>
+	※下記の「友達を検索する」ボタンをクリックしてください。<br />
+	※ログイン＆アプリ承認に成功すると、ポップアップが閉じて友達リストの読み込みが始まります。友達リストが表示されるまで少々お待ちください。<br />
+	※友達リストが表示されたら自由に検索してください。
+	</p>
+	<div id="use_button">友達を検索する</div>
+</div>
+<div id="search_main">
+	<h2>検索</h2>
+	<div id="search_boxes">
+		<table>
+			<tr>
+				<th class="query_th">名前</th>
+				<td class="query_td">
+					<input type="text" id="name" />
+					<input type="checkbox" id="name_show_empty" class="trigger_filter" value="true">データがない人を表示
+				</td>
+			</tr>
+			<tr>
+				<th class="query_th">会社</th>
+				<td class="query_td">
+					<input type="text" id="employer" />
+					<input type="checkbox" id="latestEmployer_show_empty" class="trigger_filter" value="true">データがない人を表示
+				</td>
+			</tr>
+			<tr>
+				<th class="query_th">大学（最終学歴）</th>
+				<td class="query_td">
+					<input type="text" id="education" />
+					<input type="checkbox" id="latestEducation_show_empty" class="trigger_filter" value="true">データがない人を表示
+				</td>
+			</tr>
+			<tr>
+				<th class="query_th">居住地区</th>
+				<td class="query_td">
+					<input type="text" id="currentLocation" />
+					<input type="checkbox" id="currentLocation_show_empty" class="trigger_filter" value="true">データがない人を表示
+				</td>
+			</tr>
+			<tr>
+				<th class="query_th">年齢</th>
+				<td class="query_td">
+					<input type="text" id="age_min" size="3"/>〜<input type="text" id="age_max" size="3"/>
+					<input type="checkbox" id="age_show_empty" class="trigger_filter" value="true">データがない人を表示
+				</td>
+			</tr>
+			<tr>
+				<th class="query_th">性別</th>
+				<td class="query_td">
+					<input type="checkbox" class="gender" name="gender" value="male" checked />男性
+					<input type="checkbox" class="gender" name="gender" value="female" checked />女性
+					<input type="checkbox" class="gender" name="gender" value="empty" checked />データなし
+				</td>
+			</tr>
+			<tr>
+				<th class="query_th">交際状況</th>
+				<td class="query_td">
+					<input type="checkbox" class="relationship_status" name="rionship_status" value="Single" checked />独身
+					<input type="checkbox" class="relationship_status" name="rionship_status" value="In a Relationship" checked />交際中
+					<input type="checkbox" class="relationship_status" name="rionship_status" value="In an Open Relationship" checked />オープンな関係
+					<input type="checkbox" class="relationship_status" name="rionship_status" value="Married" checked />既婚
+					<input type="checkbox" class="relationship_status" name="rionship_status" value="empty" checked />データなし
+				</td>
+			</tr>
+		</table>
+	</div>
+	<script type="text/javascript"><!--
+	google_ad_client = "ca-pub-8603358564122513";
+	/* facebook search */
+	google_ad_slot = "5028836622";
+	google_ad_width = 728;
+	google_ad_height = 90;
+	//-->
+	</script>
+	<script type="text/javascript"
+	src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+	</script>
+	<h2>友達リスト</h2>
+	<div id="result_num"></div>
+	<ul id="friends">
+    </ul>
+</div>
+</div>
 
-          <h1 id="project_title">Facebook search</h1>
-          <h2 id="project_tagline"></h2>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/tatsuakiw/facebook_search/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/tatsuakiw/facebook_search/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
+  ga('create', 'UA-40174994-1', 'kumonos.jp');
+  ga('send', 'pageview');
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
-
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Facebook search maintained by <a href="https://github.com/tatsuakiw">tatsuakiw</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-    
-
-  </body>
+</script>
+</body>
 </html>
