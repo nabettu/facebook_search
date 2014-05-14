@@ -186,7 +186,7 @@ h2{
 	margin: 10px 0 0 0;
 }
 
-#use_button{
+#use_button, #honke_button{
 	cursor: pointer;
 	background: #4660a2;
 	color: #fff;
