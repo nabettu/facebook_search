@@ -1,12 +1,9 @@
 window.fbAsyncInit = function() {
-    // init the FB JS SDK
-    FB.init({
-		appId      : '1420328568182173', // App ID from the App Dashboard
-		channelUrl : '//tatsuakiw.github.io/facebook_search/channel.php', // Channel File for x-domain communication
-		status     : true, // check the login status upon init?
-		cookie     : true, // set sessions cookies to allow your server to access the session?
-		xfbml      : true  // parse XFBML tags on this page?
-    });
+   FB.init({
+     appId      : '400187290152194',
+     xfbml      : true,
+     version    : 'v2.3'
+   });
 };
 
 var FBSearch = {
